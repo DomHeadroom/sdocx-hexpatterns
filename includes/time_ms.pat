@@ -1,6 +1,5 @@
 #pragma once
 
-import std.io;
 import std.time;
 
 namespace auto type {
