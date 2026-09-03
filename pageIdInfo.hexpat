@@ -1,18 +1,13 @@
 #pragma description pageIdInfo.dat hexpattern
+#pragma endian little
 
 struct PageEntry {
-    le u16 page_id_char_count;        // usually 36
-    char16 page_id[page_id_char_count];
-    u8 page_digest[0x20];             // 32 byte
+    u16 page_id_char_count;              // Character count (usually 36 for standard UUID)
+    char16 page_id[page_id_char_count];  // Page UUID string (UTF-16LE)
+    u8 page_digest[32];                  // SHA-256 hash for incremental page sync
 };
 
-struct PageEntryList {
-    if (page_count != 0) {
-        PageEntry pages[page_count];
-    }
-};
+u8 note_digest[32] @ 0x00;               // Global SHA-256 hash of the note
+u16 page_count @ 0x20;
 
-u8 note_digest[0x20] @ 0x00;          // 32 byte
-le u16 page_count @ 0x20;
-
-PageEntryList page_entries @ 0x22;
+PageEntry page_entries[page_count] @ 0x22;
